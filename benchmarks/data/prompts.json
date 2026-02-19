@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "description": "Benchmark prompts for AI Model Router evaluation. Each prompt has an expected task type and difficulty level.",
+  "prompts": [
+    {
+      "id": "code-001",
+      "text": "Write a Python function that implements binary search on a sorted list. Include type hints and handle edge cases.",
+      "expected_type": "code",
+      "difficulty": "medium",
+      "eval_criteria": "Correct implementation, handles empty list and missing elements, has type hints"
+    },
+    {
+      "id": "code-002",
+      "text": "Debug this JavaScript code that should reverse a linked list but returns null:\n\nfunction reverseList(head) {\n  let prev = null;\n  let current = head;\n  while (current) {\n    current.next = prev;\n    prev = current;\n    current = current.next;\n  }\n  return prev;\n}",
+      "expected_type": "code",
+      "difficulty": "medium",
+      "eval_criteria": "Identifies the bug (current.next is overwritten before saving), provides corrected code"
+    },
+    {
+      "id": "code-003",
+      "text": "Implement a LRU cache in Python with O(1) get and put operations. Support a configurable max capacity.",
+      "expected_type": "code",
+      "difficulty": "hard",
+      "eval_criteria": "Uses OrderedDict or doubly-linked list + dict, O(1) operations, correct eviction"
+    },
+    {
+      "id": "writing-001",
+      "text": "Write a persuasive essay (300-400 words) arguing that remote work improves productivity. Use at least two specific examples or statistics.",
+      "expected_type": "writing",
+      "difficulty": "medium",
+      "eval_criteria": "Clear thesis, logical structure, specific evidence, persuasive tone, appropriate length"
+    },
+    {
+      "id": "writing-002",
+      "text": "Write a short story (200-300 words) about a programmer who discovers their code has become sentient. Use vivid imagery and an unexpected ending.",
+      "expected_type": "writing",
+      "difficulty": "medium",
+      "eval_criteria": "Creative premise, vivid language, character development, surprising ending, appropriate length"
+    },
+    {
+      "id": "writing-003",
+      "text": "Rewrite this paragraph in a professional business tone: 'Hey everyone! So we totally messed up the launch date and now we gotta push it back like two weeks. My bad! The devs need more time to squash bugs and stuff. Let me know if this is gonna be a problem for anyone.'",
+      "expected_type": "writing",
+      "difficulty": "low",
+      "eval_criteria": "Professional tone, preserves all key information, appropriate business language"
+    },
+    {
+      "id": "reasoning-001",
+      "text": "A farmer has 17 sheep. All but 9 die. How many sheep does the farmer have left?",
+      "expected_type": "reasoning",
+      "difficulty": "low",
+      "eval_criteria": "Correct answer: 9 (not 8). Must understand the trick phrasing."
+    },
+    {
+      "id": "reasoning-002",
+      "text": "Prove that the square root of 2 is irrational using proof by contradiction.",
+      "expected_type": "reasoning",
+      "difficulty": "hard",
+      "eval_criteria": "Valid proof by contradiction, assumes sqrt(2) = a/b in lowest terms, derives contradiction"
+    },
+    {
+      "id": "reasoning-003",
+      "text": "A bat and a ball cost $1.10 together. The bat costs $1.00 more than the ball. How much does the ball cost? Show your reasoning step by step.",
+      "expected_type": "reasoning",
+      "difficulty": "medium",
+      "eval_criteria": "Correct answer: $0.05. Must show algebraic reasoning, not fall for the intuitive $0.10 trap."
+    },
+    {
+      "id": "summarization-001",
+      "text": "Summarize the key points of this text in 3 bullet points:\n\nThe James Webb Space Telescope (JWST) has revolutionized our understanding of the early universe since its launch in December 2021. Operating primarily in infrared wavelengths, JWST can peer through cosmic dust clouds that obscured the view of earlier telescopes like Hubble. Among its most significant discoveries are galaxies that formed just 300 million years after the Big Bang, much earlier than previously thought possible. The telescope has also provided unprecedented detail about exoplanet atmospheres, detecting water vapor, carbon dioxide, and even signs of dimethyl sulfide on distant worlds. Scientists estimate JWST will continue operating for at least 20 years, far exceeding its original 5-10 year mission timeline, thanks to an efficient launch that conserved fuel.",
+      "expected_type": "summarization",
+      "difficulty": "low",
+      "eval_criteria": "Exactly 3 bullet points, captures: early galaxies, exoplanet atmospheres, extended mission lifetime"
+    },
+    {
+      "id": "summarization-002",
+      "text": "Condense this technical documentation into a 2-sentence TL;DR:\n\nKubernetes (K8s) is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. It groups containers into logical units called pods, which are the smallest deployable units. Pods are managed by controllers such as Deployments (for stateless apps), StatefulSets (for stateful apps), and DaemonSets (for node-level services). K8s uses a declarative configuration model where users specify desired state in YAML manifests, and the control plane continuously reconciles actual state with desired state. Key components include the API server, etcd (distributed key-value store), scheduler, and kubelet (node agent). Services provide stable networking and load balancing across pod replicas, while Ingress resources manage external HTTP/HTTPS routing.",
+      "expected_type": "summarization",
+      "difficulty": "medium",
+      "eval_criteria": "Exactly 2 sentences, captures core purpose and key architectural concepts"
+    },
+    {
+      "id": "research-001",
+      "text": "Compare and contrast the pros and cons of PostgreSQL vs MongoDB for a new web application that needs to handle both structured user data and unstructured content like blog posts and comments.",
+      "expected_type": "research",
+      "difficulty": "medium",
+      "eval_criteria": "Balanced comparison, mentions ACID vs flexibility, schema, scaling, specific use case advice"
+    },
+    {
+      "id": "research-002",
+      "text": "What are the main differences between TCP and UDP protocols? When would you use each one?",
+      "expected_type": "research",
+      "difficulty": "low",
+      "eval_criteria": "Covers reliability, ordering, connection, overhead; gives concrete use cases for each"
+    },
+    {
+      "id": "translation-001",
+      "text": "Translate the following English paragraph to Spanish, maintaining a formal tone:\n\n'We are pleased to announce that our company has exceeded quarterly revenue expectations by 15%. This growth is primarily attributed to the expansion of our cloud services division and strategic partnerships formed in the Asia-Pacific region.'",
+      "expected_type": "translation",
+      "difficulty": "medium",
+      "eval_criteria": "Accurate translation, formal register, correct grammar, preserves meaning and numbers"
+    },
+    {
+      "id": "translation-002",
+      "text": "Translate this Japanese sentence to English and explain any cultural nuances: 'お疲れ様でした。今日も一日頑張りましたね。'",
+      "expected_type": "translation",
+      "difficulty": "medium",
+      "eval_criteria": "Accurate translation, explains otsukaresama cultural context (not just literal meaning)"
+    },
+    {
+      "id": "data-001",
+      "text": "Parse the following CSV data and tell me which month had the highest sales and the average sales across all months:\n\nMonth,Sales,Returns\nJan,45000,2100\nFeb,52000,1800\nMar,48000,2400\nApr,61000,1500\nMay,55000,2000\nJun,67000,1200",
+      "expected_type": "data",
+      "difficulty": "low",
+      "eval_criteria": "Correctly identifies June ($67,000) as highest, calculates average ($54,666.67)"
+    },
+    {
+      "id": "data-002",
+      "text": "Given this JSON API response, write a Python script to extract all users who signed up in 2024 and calculate their average age:\n\n{\"users\": [{\"name\": \"Alice\", \"age\": 28, \"signup\": \"2024-01-15\"}, {\"name\": \"Bob\", \"age\": 35, \"signup\": \"2023-06-20\"}, {\"name\": \"Carol\", \"age\": 24, \"signup\": \"2024-03-10\"}, {\"name\": \"Dave\", \"age\": 31, \"signup\": \"2024-07-22\"}, {\"name\": \"Eve\", \"age\": 42, \"signup\": \"2023-11-05\"}]}",
+      "expected_type": "data",
+      "difficulty": "medium",
+      "eval_criteria": "Correct filtering (Alice, Carol, Dave), correct average age (27.67), working Python code"
+    },
+    {
+      "id": "conversation-001",
+      "text": "What's your opinion on pineapple as a pizza topping?",
+      "expected_type": "conversation",
+      "difficulty": "low",
+      "eval_criteria": "Engaging, balanced response that acknowledges both sides, conversational tone"
+    },
+    {
+      "id": "conversation-002",
+      "text": "I'm feeling overwhelmed with my workload. Any tips for managing stress and staying productive?",
+      "expected_type": "conversation",
+      "difficulty": "low",
+      "eval_criteria": "Empathetic, practical advice, organized tips, supportive tone"
+    }
+  ]
+}
