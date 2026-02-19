@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Model Router</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>AI Model Router</h1>
+      <p class="subtitle">Intelligent multi-model orchestration — see which model gets picked and why</p>
+    </header>
+
+    <div class="main-layout">
+      <!-- Chat panel -->
+      <div class="chat-panel">
+        <div class="chat-messages" id="messages"></div>
+
+        <form class="chat-input" id="chat-form">
+          <div class="input-row">
+            <textarea
+              id="prompt-input"
+              placeholder="Try: 'Write a Python quicksort' or 'Write a persuasive essay on remote work'..."
+              rows="2"
+            ></textarea>
+            <button type="submit" id="send-btn">Send</button>
+          </div>
+          <div class="input-options">
+            <label>
+              Budget:
+              <select id="budget-select">
+                <option value="best">Best quality</option>
+                <option value="balanced">Balanced</option>
+                <option value="cheap">Cheapest</option>
+              </select>
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <!-- Side panel -->
+      <div class="side-panel" id="side-panel">
+        <div class="side-panel-empty" id="side-empty">
+          <p>Send a prompt to see the routing decision here.</p>
+          <div class="example-prompts">
+            <h3>Try these:</h3>
+            <button class="example-btn" data-prompt="Write a Python function to implement binary search">Code task</button>
+            <button class="example-btn" data-prompt="Write a persuasive essay on why remote work improves productivity">Writing task</button>
+            <button class="example-btn" data-prompt="A bat and ball cost $1.10. The bat costs $1 more than the ball. How much is the ball?">Reasoning task</button>
+            <button class="example-btn" data-prompt="Summarize the key benefits of microservices architecture in 3 bullet points">Summarization</button>
+            <button class="example-btn" data-prompt="Translate 'Good morning, how are you?' to Japanese, Spanish, and French">Translation</button>
+          </div>
+        </div>
+        <div class="side-panel-content" id="side-content" style="display:none">
+          <h2>Routing Decision</h2>
+
+          <div class="decision-card" id="decision-card">
+            <div class="decision-row">
+              <span class="label">Task Type</span>
+              <span class="value badge" id="d-task-type"></span>
+            </div>
+            <div class="decision-row">
+              <span class="label">Confidence</span>
+              <span class="value" id="d-confidence"></span>
+            </div>
+            <div class="decision-row">
+              <span class="label">Keywords</span>
+              <span class="value" id="d-keywords"></span>
+            </div>
+          </div>
+
+          <h3>Selected Model</h3>
+          <div class="model-card" id="selected-model-card">
+            <div class="model-name" id="d-model-name"></div>
+            <div class="model-meta">
+              <span id="d-model-score"></span>
+              <span id="d-model-cost"></span>
+            </div>
+            <div class="model-meta">
+              <span id="d-latency"></span>
+              <span id="d-est-cost"></span>
+            </div>
+          </div>
+
+          <h3>Why This Model?</h3>
+          <p class="reasoning" id="d-reasoning"></p>
+
+          <h3>Alternatives</h3>
+          <div id="d-alternatives"></div>
+
+          <h3>All Scores for "<span id="d-task-label"></span>"</h3>
+          <div class="score-chart" id="d-score-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
