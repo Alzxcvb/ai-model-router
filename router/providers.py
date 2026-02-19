@@ -32,11 +32,20 @@ class OpenRouterProvider:
         system_prompt: str | None = None,
         max_tokens: int = 1024,
     ) -> tuple[str, float]:
-        """Send a prompt to a model and return (response_text, latency_ms).
+        """Send a prompt to a model and return (response_text, latency_ms)."""
+        return self.call_raw(
+            model.id, prompt, system_prompt=system_prompt, max_tokens=max_tokens
+        )
 
-        Returns:
-            Tuple of (response content, latency in milliseconds).
-        """
+    def call_raw(
+        self,
+        model_id: str,
+        prompt: str,
+        *,
+        system_prompt: str | None = None,
+        max_tokens: int = 1024,
+    ) -> tuple[str, float]:
+        """Send a prompt to a model by ID string. Returns (response_text, latency_ms)."""
         messages = []
         if system_prompt:
             messages.append({"role": "system", "content": system_prompt})
@@ -44,7 +53,7 @@ class OpenRouterProvider:
 
         start = time.perf_counter()
         response = self.client.chat.completions.create(
-            model=model.id,
+            model=model_id,
             messages=messages,
             max_tokens=max_tokens,
         )

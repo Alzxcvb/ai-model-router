@@ -25,24 +25,35 @@ def main() -> None:
         help="Budget mode: best (highest quality), balanced (score/cost), cheap (lowest cost)",
     )
     parser.add_argument(
+        "--classifier",
+        choices=["rules", "llm"],
+        default="rules",
+        help="Classification method: rules (keyword matching) or llm (Gemini Flash)",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Only show routing decision, don't call the model",
     )
     args = parser.parse_args()
 
+    # LLM classifier needs an API key even for dry-run
+    needs_api_key = not args.dry_run or args.classifier == "llm"
+
     try:
-        router = Router(budget=args.budget)
+        router = Router(
+            budget=args.budget,
+            classifier_method=args.classifier,
+        )
     except ValueError as e:
-        if args.dry_run:
-            # Dry run doesn't need an API key — create a minimal router
+        if not needs_api_key:
             router = None
         else:
             print(f"Error: {e}", file=sys.stderr)
             sys.exit(1)
 
-    if args.dry_run:
-        # For dry run without API key, classify and select manually
+    if args.dry_run and router is None:
+        # Rules-only dry run without API key
         from .classifier import classify
         from .models import get_best_model_for_task, get_ranked_models
 
@@ -54,20 +65,22 @@ def main() -> None:
             model.scores.get(classification.task_type, 0),
         )
 
+        _print_decision(args, classification, model, score, ranked)
+        return
+
+    if args.dry_run:
+        result = router.route(args.prompt, dry_run=True)
+        assert isinstance(result, RoutingDecision)
         print("=== Routing Decision (dry run) ===")
         print(f"Prompt:     {args.prompt[:80]}{'...' if len(args.prompt) > 80 else ''}")
-        print(f"Task type:  {classification.task_type.value}")
-        print(f"Confidence: {classification.confidence}")
-        print(f"Keywords:   {', '.join(classification.keywords_matched) or '(none)'}")
-        print(f"Model:      {model.name} ({model.id})")
-        print(f"Score:      {score}/10")
-        print(f"Budget:     {args.budget}")
-        print(f"Cost:       ${model.cost_per_million_input}/M in, ${model.cost_per_million_output}/M out")
+        print(f"Task type:  {result.task_type.value}")
+        print(f"Model:      {result.model.name} ({result.model.id})")
+        print(f"Score:      {result.score}/10")
+        print(f"Reasoning:  {result.reasoning}")
         print()
         print("--- Alternatives ---")
-        for alt_model, alt_score in ranked:
-            if alt_model.id != model.id:
-                print(f"  {alt_model.name:<25} score: {alt_score}/10  cost: ${alt_model.cost_per_million_input}/M in")
+        for alt_model, alt_score in result.alternatives:
+            print(f"  {alt_model.name:<25} score: {alt_score}/10  cost: ${alt_model.cost_per_million_input}/M in")
         return
 
     result = router.route(args.prompt)
@@ -84,6 +97,24 @@ def main() -> None:
     print()
     print("--- Response ---")
     print(result.content)
+
+
+def _print_decision(args, classification, model, score, ranked):
+    """Print routing decision for no-API-key dry run."""
+    print("=== Routing Decision (dry run) ===")
+    print(f"Prompt:     {args.prompt[:80]}{'...' if len(args.prompt) > 80 else ''}")
+    print(f"Task type:  {classification.task_type.value}")
+    print(f"Confidence: {classification.confidence}")
+    print(f"Keywords:   {', '.join(classification.keywords_matched) or '(none)'}")
+    print(f"Model:      {model.name} ({model.id})")
+    print(f"Score:      {score}/10")
+    print(f"Budget:     {args.budget}")
+    print(f"Cost:       ${model.cost_per_million_input}/M in, ${model.cost_per_million_output}/M out")
+    print()
+    print("--- Alternatives ---")
+    for alt_model, alt_score in ranked:
+        if alt_model.id != model.id:
+            print(f"  {alt_model.name:<25} score: {alt_score}/10  cost: ${alt_model.cost_per_million_input}/M in")
 
 
 if __name__ == "__main__":

@@ -17,12 +17,22 @@ class TaskType(str, Enum):
     DATA = "data"
 
 
+class Complexity(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+
 @dataclass
 class ClassificationResult:
     """Output of prompt classification."""
     task_type: TaskType
     confidence: float  # 0.0 - 1.0
+    complexity: Complexity = Complexity.MEDIUM
+    needs_reasoning: bool = False
+    needs_creativity: bool = False
     keywords_matched: list[str] = field(default_factory=list)
+    method: str = "rules"  # "rules" or "llm"
 
 
 @dataclass
